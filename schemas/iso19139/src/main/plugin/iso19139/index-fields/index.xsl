@@ -947,6 +947,8 @@
                               then daobs:search-in-contains($legalTextList/*, $title)
                               else daobs:search-in($legalTextList/*, $title)"/>
 
+        <xsl:variable name="conformanceTitle" select="(*/gmd:specification/gmd:CI_Citation/gmd:title)" />
+        
         <xsl:variable name="pass"
                       select="*/gmd:pass/gco:Boolean"/>
 
@@ -958,7 +960,7 @@
 
         <xsl:if test="string($title)">
           <specificationConformance type="object">{
-            "title": "<xsl:value-of select="util:escapeForJson($title)" />",
+            "titleObject": <xsl:value-of select="gn-fn-index:add-multilingual-field('title', $conformanceTitle, $allLanguages, true())"/>,
             <xsl:if test="gn-fn-index:is-isoDate((*/gmd:specification/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:Date)[1])">
               "date": "<xsl:value-of select="(*/gmd:specification/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date/gco:Date)[1]" />",
             </xsl:if>
